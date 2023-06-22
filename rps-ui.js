@@ -9,27 +9,23 @@ buttons.forEach((button) => button.addEventListener('click', startGame));
 let result = '';
 let playerScore = 0;
 let computerScore = 0;
-// let playerSelection = '';
 
-// startGame();
 function getComputerChoice() {
   let choice = ['Rock', 'Paper', 'Scissors'];
   let randomIndex = Math.floor(Math.random() * choice.length);
   let computerChoice = choice[randomIndex].toLowerCase();
-  console.log(computerChoice);
   return computerChoice;
 }
 function getPlayerSelection(e) {
   if (e) {
     playerSelection = e.target.innerHTML.toLowerCase();
   }
-  console.log(playerSelection);
   return playerSelection;
 }
 
 function playRound(playerSelection, computerSelection) {
   if (playerSelection == computerSelection) {
-    result = "It's a tie, try Once more";
+    result = "It's a tie, try again";
   } else if (playerSelection == 'rock') {
     if (computerSelection == 'scissors') {
       result = 'You Win!';
@@ -51,33 +47,36 @@ function playRound(playerSelection, computerSelection) {
   } else {
     result = 'Enter a valid selection';
   }
-
   return result;
 }
-
-function startGame() {
-  const computerSelection = getComputerChoice();
-  const playerSelection = getPlayerSelection();
-  playRound(playerSelection, computerSelection);
-  console.log(result);
+function scoreCount() {
   if (result.includes('You Win')) {
     playerScore++;
   } else if (result.includes('You lose')) {
     computerScore++;
-    // continue;
   }
-  resultTab.textContent = `Result: ${result}`;
-  scoreCard.textContent = `Score : ${playerScore}`;
-  console.log({ playerScore, computerScore });
-  return playerScore, computerScore;
 }
 
-// console.log(`Your score =  ${playerScore}`);
-// console.log(`Computer score =  ${computerScore}`);
-// if (playerScore == computerScore) {
-//   console.log('Oh the Game is Tied!! Do you wanna play again ?');
-// } else if (playerScore > computerScore) {
-//   console.log('You are the winner');
-// } else {
-//   console.log('Computer is the winner');
-// }
+function resetValues() {
+  if (playerScore == 5 || computerScore == 5) {
+    result = '';
+    playerScore = 0;
+    computerScore = 0;
+  }
+  console.log();
+}
+resetValues();
+function startGame() {
+  const computerSelection = getComputerChoice();
+  const playerSelection = getPlayerSelection();
+  playRound(playerSelection, computerSelection);
+  scoreCount();
+  if (playerScore == 5 || computerScore == 5) {
+    resultTab.textContent = 'We have a winner !!!';
+    resetValues();
+  }
+
+  resultTab.textContent = `Result: ${result}`;
+  scoreCard.textContent = `Your Score : ${playerScore} || Computer Score: ${computerScore}`;
+  return playerScore, computerScore;
+}
