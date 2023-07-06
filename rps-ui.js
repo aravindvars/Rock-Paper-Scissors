@@ -57,23 +57,31 @@ function scoreCount() {
   }
 }
 
-function resetValues() {
-  if (playerScore == 5 || computerScore == 5) {
-    result = '';
-    playerScore = 0;
-    computerScore = 0;
-  }
-  console.log();
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
-resetValues();
+function resetValues() {
+  result = '';
+  playerScore = 0;
+  computerScore = 0;
+  (async () => {
+    await sleep(3000); // Sleep for 3000 milliseconds (3 seconds)
+    resultTab.textContent = `Result: ${result}`;
+    scoreCard.textContent = `Your Score : ${playerScore} || Computer Score: ${computerScore}`;
+  })();
+}
+
 function startGame() {
   const computerSelection = getComputerChoice();
   const playerSelection = getPlayerSelection();
   playRound(playerSelection, computerSelection);
   scoreCount();
   if (playerScore == 5 || computerScore == 5) {
-    resultTab.textContent = 'We have a winner !!!';
-    resetValues();
+    (async () => {
+      await sleep(500); // Sleep for 3000 milliseconds (3 seconds)
+      resultTab.textContent = 'We have a winner !!!';
+      resetValues();
+    })();
   }
 
   resultTab.textContent = `Result: ${result}`;
